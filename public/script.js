@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const data = await response.json();
-            document.getElementById("chatBox").innerHTML = "";
+            let responseBox = document.getElementById("chatBox").innerHTML = "";
             // Add assistant message
             responseBox.innerHTML += `<p class="assistant-msg"><strong>AI:</strong> ${data}</p>`;
             responseBox.scrollTop = responseBox.scrollHeight;
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const data = await response.json();
-            document.getElementById("chatBox").innerHTML = "";
+            let responseBox = document.getElementById("chatBox").innerHTML = "";
             // Add assistant message
             responseBox.innerHTML += `<p class="assistant-msg"><strong>AI:</strong> ${data}</p>`;
             responseBox.scrollTop = responseBox.scrollHeight;
