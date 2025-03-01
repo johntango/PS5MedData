@@ -45,7 +45,53 @@ app.post("/chat", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch OpenAI response" });
   }
 });
+app.post("/validateSynthic", async (req, res) => {
+    try {
+        let model = 'o1-preview'
+        let {input_data} = req.body;
+        let messages = [
+            {
+                "role": "user",
+                "content": ` """
+                You are a helpful assistant designed to validate the quality of medical datasets. You will be given a single row of medical data, and your task is to determine whether the data is valid.
+                
+                - Carefully analyze the data for any inconsistencies, contradictions, missing values, or implausible information.
+                - Consider the logical relationships between different fields (e.g., treatments should be appropriate for the diagnoses, medications should not conflict with allergies, lab results should be consistent with diagnoses, etc.).
+                - Use your general medical knowledge to assess the validity of the data.
+                - Focus solely on the information provided without making assumptions beyond the given data.
+                
+                **Return only a JSON object** with the following two properties:
+                
+                - "is_valid": a boolean (true or false) indicating whether the data is valid.
+                - "issue": if "is_valid" is false, provide a brief explanation of the issue; if "is_valid" is true, set "issue" to null.
+                
+                Both JSON properties must always be present.
+                
+                Do not include any additional text or explanations outside the JSON object.
+                
+                MEDICAL DATA:
+                ${input_data}
+                """ 
+                `
+            }
+        ]
+        let response = await client.chat.completions.create({
+            model : model,
+            messages : messages
+        )
+        let data = response.choices[0].message.content.replace('```json', '').replace('```', '').strip()
+        // check if data is an object { }
+        if {isinstance(data, dict)}{
 
+        }
+        else {
+            res.json();
+        }
+        
+    }catch(error){
+
+    }
+})
 app.post("/createSynthic", async (req, res) => {
     try {
         let model = 'o1-preview'
