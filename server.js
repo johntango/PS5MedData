@@ -8,7 +8,7 @@ dotenv.config();
 
 // Initialize OpenAI API client
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 const app = express();
@@ -23,32 +23,32 @@ app.use(express.static("public")); // Serve static frontend files
  * Handles chat requests to OpenAI
  */
 app.post("/chat", async (req, res) => {
-  try {
-    const { systemMessage, prompt, model, thread } = req.body;
+    try {
+        const { systemMessage, prompt, model, thread } = req.body;
 
-    // Construct conversation history
-    const messages = thread.length > 0 ? [...thread] : [{ role: "system", content: systemMessage }];
-    messages.push({ role: "user", content: prompt });
+        // Construct conversation history
+        const messages = thread.length > 0 ? [...thread] : [{ role: "system", content: systemMessage }];
+        messages.push({ role: "user", content: prompt });
 
-    // Send request to OpenAI
-    const response = await openai.chat.completions.create({
-      model: model,
-      messages: messages,
-    });
+        // Send request to OpenAI
+        const response = await openai.chat.completions.create({
+            model: model,
+            messages: messages,
+        });
 
-    const aiResponse = response.choices[0].message;
+        const aiResponse = response.choices[0].message;
 
-    res.json({ response: aiResponse, updatedThread: [...messages, aiResponse] });
+        res.json({ response: aiResponse, updatedThread: [...messages, aiResponse] });
 
-  } catch (error) {
-    console.error("OpenAI API Error:", error);
-    res.status(500).json({ error: "Failed to fetch OpenAI response" });
-  }
+    } catch (error) {
+        console.error("OpenAI API Error:", error);
+        res.status(500).json({ error: "Failed to fetch OpenAI response" });
+    }
 });
 app.post("/validateSynthic", async (req, res) => {
     try {
         let model = 'o1-preview'
-        let {input_data} = req.body;
+        let { input_data } = req.body;
         let messages = [
             {
                 "role": "user",
@@ -76,19 +76,16 @@ app.post("/validateSynthic", async (req, res) => {
             }
         ]
         let response = await client.chat.completions.create({
-            model : model,
-            messages : messages
-        )
+            model: model,
+            messages: messages
+        });
         let data = response.choices[0].message.content.replace('```json', '').replace('```', '').strip()
         // check if data is an object { }
-        if {isinstance(data, dict)}{
 
-        }
-        else {
-            res.json();
-        }
-        
-    }catch(error){
+        res.json();
+
+
+    } catch (error) {
 
     }
 })
@@ -141,8 +138,8 @@ app.post("/createSynthic", async (req, res) => {
         ];
 
         let response = await client.chat.completions.create({
-            model : model,
-            messages : messages
+            model: model,
+            messages: messages
         });
         let data = response.choices[0].message.content.replace('```csv', '').replace('```', '');
         // write data to "data/sytheticMed.csv"
@@ -154,15 +151,15 @@ app.post("/createSynthic", async (req, res) => {
     catch (error) {
         console.error("OpenAI API Error:", error);
         res.status(500).json({ error: "Failed to fetch OpenAI response" });
- 
+
     }
 });
 
-    
+
 
 
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}`);
 });
