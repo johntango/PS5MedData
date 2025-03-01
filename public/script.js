@@ -37,12 +37,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    document.getElementById("newThreadBtn").addEventListener("click", () => {
+    document.getElementById("newThreadBtn").addEventListener("click", async () => {
         thread = [];
         document.getElementById("chatBox").innerHTML = "";
     });
 
-    document.getElementById("toggleThemeBtn").addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
+    document.getElementById("createSynData").addEventListener("click", async () => {
+        try {
+            const model = document.getElementById("modelSelect").value;
+            const response = await fetch("/createSynData", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ model }),
+            });
+
+            const data = await response.json();
+            document.getElementById("chatBox").innerHTML = "";
+            // Add assistant message
+            responseBox.innerHTML += `<p class="assistant-msg"><strong>AI:</strong> ${data}</p>`;
+            responseBox.scrollTop = responseBox.scrollHeight;
+        }
+        catch (error) {
+
+        }
+    })
+
+    document.getElementById("validateSynData").addEventListener("click", async () => {
+        try {
+            const model = document.getElementById("modelSelect").value;
+            const response = await fetch("/validateSynData", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ model }),
+            });
+
+            const data = await response.json();
+            document.getElementById("chatBox").innerHTML = "";
+            // Add assistant message
+            responseBox.innerHTML += `<p class="assistant-msg"><strong>AI:</strong> ${data}</p>`;
+            responseBox.scrollTop = responseBox.scrollHeight;
+        }
+        catch (error) {
+
+        }
     });
+
+    document.getElementById("toggleThemeBtn").addEventListener("click", async () => {
+        document.body.classList.toggle("dark-mode");
+    })
 });

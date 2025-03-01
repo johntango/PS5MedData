@@ -45,7 +45,7 @@ app.post("/chat", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch OpenAI response" });
     }
 });
-app.post("/validateSynthic", async (req, res) => {
+app.post("/validateSynData", async (req, res) => {
     try {
         let model = 'o1-preview'
         let { input_data } = req.body;
@@ -75,7 +75,7 @@ app.post("/validateSynthic", async (req, res) => {
                 `
             }
         ]
-        let response = await client.chat.completions.create({
+        let response = await openai.chat.completions.create({
             model: model,
             messages: messages
         });
@@ -89,7 +89,7 @@ app.post("/validateSynthic", async (req, res) => {
 
     }
 })
-app.post("/createSynthic", async (req, res) => {
+app.post("/createSynData", async (req, res) => {
     try {
         let model = 'o1-preview'
         let messages = [
@@ -137,7 +137,7 @@ app.post("/createSynthic", async (req, res) => {
             }
         ];
 
-        let response = await client.chat.completions.create({
+        let response = await openai.chat.completions.create({
             model: model,
             messages: messages
         });
