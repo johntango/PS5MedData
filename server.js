@@ -48,6 +48,7 @@ app.post("/chat", async (req, res) => {
 
 app.post("/createSynthic", async (req, res) => {
     try {
+        let model = 'o1-preview'
         let messages = [
             {
                 "role": "user",
@@ -94,14 +95,14 @@ app.post("/createSynthic", async (req, res) => {
         ];
 
         let response = await client.chat.completions.create({
-            model : MODEL,
+            model : model,
             messages : messages
         });
         let data = response.choices[0].message.content.replace('```csv', '').replace('```', '');
         // write data to "data/sytheticMed.csv"
-        
 
-        res.json()
+
+        res.json("Synthetic data added to file")
 
     }
     catch (error) {
