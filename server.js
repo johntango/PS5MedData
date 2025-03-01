@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { OpenAI } from "openai";
+import fs from 'fs';
+import path from 'path';
 
 // Load environment variables
 dotenv.config();
@@ -143,9 +145,10 @@ app.post("/createSynData", async (req, res) => {
         });
         let data = response.choices[0].message.content.replace('```csv', '').replace('```', '');
         // write data to "data/sytheticMed.csv"
+        const filePath = path.join(__dirname, 'data', 'syntheticMed.csv');  // path to file
+        fs.writeFileSync(filePath, data);
 
-
-        res.json("Synthetic data added to file")
+        res.json("Synthetic data added to file lenght : " + data.length);
 
     }
     catch (error) {
